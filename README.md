@@ -1,6 +1,6 @@
 # RubyGPG2
 
-A simple Ruby wrapper for invoking gpg commands.
+A simple Ruby wrapper for invoking gpg (>= 2.0) commands.
 
 ## Installation
 

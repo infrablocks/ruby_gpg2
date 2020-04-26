@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors = ['Toby Clemson']
   spec.email = ['tobyclemson@gmail.com']
 
-  spec.summary = 'A simple Ruby wrapper for invoking gpg commands.'
-  spec.description = 'Wraps the gpg binary (> 2.0) so that it can be ' +
+  spec.summary = 'A simple Ruby wrapper for invoking gpg (>= 2.0) commands.'
+  spec.description = 'Wraps the gpg binary (>= 2.0) so that it can be ' +
       'invoked from a Ruby script or Rakefile.'
   spec.homepage = 'https://github.com/infrablocks/ruby_gpg2'
   spec.license = 'MIT'
