@@ -36,16 +36,16 @@ describe RubyGPG2::Commands::GenerateKey do
   it_behaves_like "a command with global config", '--generate-key'
 
   it 'passes the parameter file as an argument when supplied' do
-    parameter_file = 'some/parameter/file'
+    parameter_file_path = 'some/parameter/file'
 
     command = subject.class.new
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^path\/to\/binary.* --generate-key #{parameter_file}/,
+            .with(/^path\/to\/binary.* --generate-key #{parameter_file_path}/,
                 any_args))
 
     command.execute(
-        parameter_file: parameter_file)
+        parameter_file_path: parameter_file_path)
   end
 end

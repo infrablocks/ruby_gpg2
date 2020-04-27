@@ -9,11 +9,11 @@ module RubyGPG2
       include Mixins::GlobalConfig
 
       def configure_command(builder, opts)
-        parameter_file = opts[:parameter_file]
+        parameter_file_path = opts[:parameter_file_path]
 
         builder = builder.with_subcommand('--generate-key')
         builder = super(builder, opts)
-        builder = builder.with_argument(parameter_file) if parameter_file
+        builder = builder.with_argument(parameter_file_path) if parameter_file_path
         builder
       end
     end

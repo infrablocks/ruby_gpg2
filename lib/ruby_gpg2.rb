@@ -1,5 +1,6 @@
 require 'ruby_gpg2/version'
 require 'ruby_gpg2/commands'
+require 'ruby_gpg2/parameter_file'
 
 module RubyGPG2
   class << self
