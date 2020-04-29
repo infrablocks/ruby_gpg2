@@ -222,6 +222,46 @@ describe RubyGPG2::ColonRecord do
         end
       end
     end
+
+    context 'for key capabilities' do
+      {
+          'e' => :encrypt,
+          's' => :sign,
+          'c' => :certify,
+          'a' => :authenticate,
+          'E' => :primary_encrypt,
+          'S' => :primary_sign,
+          'C' => :primary_certify,
+          'A' => :primary_authenticate,
+          '?' => :unknown
+      }.each do |key_capability_string, key_capability|
+        it "handles records with key capability #{key_capability_string}" do
+          colon_output = "pub:::::::::::#{key_capability_string}:::::::::"
+
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+
+          expect(key_list_record.key_capabilities)
+              .to(eq([key_capability]))
+        end
+      end
+    end
+
+    context 'for compliance modes' do
+      {
+          '8' => :rfc_4880bis,
+          '23' => :de_vs,
+          '6001' => :roca_screening_hit
+      }.each do |compliance_mode_string, compliance_mode|
+        it "handles records with compliance mode #{compliance_mode_string}" do
+          colon_output = "pub:::::::::::::::::#{compliance_mode_string}:::"
+
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+
+          expect(key_list_record.compliance_modes)
+              .to(eq([compliance_mode]))
+        end
+      end
+    end
   end
 
   context 'properties' do

@@ -65,14 +65,18 @@ module RubyGPG2
         'e' => :encrypt,
         's' => :sign,
         'c' => :certify,
+        'a' => :authenticate,
         'E' => :primary_encrypt,
         'S' => :primary_sign,
-        'C' => :primary_certify
+        'C' => :primary_certify,
+        'A' => :primary_authenticate,
+        '?' => :unknown
     }
 
     COMPLIANCE_MODES = {
         '8' => :rfc_4880bis,
-        '23' => :de_vs
+        '23' => :de_vs,
+        '6001' => :roca_screening_hit
     }
 
     def self.parse(record)
