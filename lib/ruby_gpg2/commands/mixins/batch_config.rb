@@ -1,13 +1,12 @@
 module RubyGPG2
   module Commands
     module Mixins
-      module GlobalConfig
+      module BatchConfig
         def configure_command(builder, opts)
-          home_directory = opts[:home_directory]
+          batch = opts[:batch].nil? ? true : opts[:batch]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-              '--homedir', home_directory, quoting: '"') if home_directory
+          builder = builder.with_flag('--batch') if batch
           builder
         end
       end

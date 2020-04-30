@@ -3,22 +3,11 @@ require 'lino'
 module RubyGPG2
   module Commands
     class Base
-      attr_reader :binary
-
-      def initialize(binary: nil)
+      def initialize(binary: nil, stdin: nil, stdout: nil, stderr: nil)
         @binary = binary || RubyGPG2.configuration.binary
-      end
-
-      def stdin
-        ''
-      end
-
-      def stdout
-        STDOUT
-      end
-
-      def stderr
-        STDERR
+        @stdin = stdin || RubyGPG2.configuration.stdin
+        @stdout = stdout || RubyGPG2.configuration.stdout
+        @stderr = stderr || RubyGPG2.configuration.stderr
       end
 
       def execute(opts = {})
@@ -34,6 +23,10 @@ module RubyGPG2
                 stderr: stderr)
         do_after(opts)
       end
+
+      protected
+
+      attr_reader :binary, :stdin, :stdout, :stderr
 
       def instantiate_builder
         Lino::CommandLineBuilder

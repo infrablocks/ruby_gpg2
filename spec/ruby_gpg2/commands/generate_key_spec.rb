@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require_relative '../../support/shared_examples/global_config'
+require_relative '../../support/shared_examples/batch_config'
 
 describe RubyGPG2::Commands::GenerateKey do
   before(:each) do
@@ -28,12 +29,13 @@ describe RubyGPG2::Commands::GenerateKey do
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^path\/to\/binary.* --generate-key/, any_args))
+            .with(/^path\/to\/binary.* --generate-key$/, any_args))
 
     command.execute
   end
 
   it_behaves_like "a command with global config", '--generate-key'
+  it_behaves_like "a command with batch config", '--generate-key'
 
   it 'passes the parameter file as an argument when supplied' do
     parameter_file_path = 'some/parameter/file'
@@ -42,7 +44,7 @@ describe RubyGPG2::Commands::GenerateKey do
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^path\/to\/binary.* --generate-key #{parameter_file_path}/,
+            .with(/^path\/to\/binary.* --generate-key #{parameter_file_path}$/,
                 any_args))
 
     command.execute(

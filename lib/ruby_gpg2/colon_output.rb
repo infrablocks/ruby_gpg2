@@ -6,7 +6,7 @@ module RubyGPG2
       new(records
           .strip
           .split("\n")
-          .collect { |record| KeyListRecord.parse(record) })
+          .collect { |record| ColonRecord.parse(record) })
     end
 
     include Enumerable
@@ -17,6 +17,16 @@ module RubyGPG2
 
     def each(&block)
       @records.each(&block)
+    end
+
+    def ==(other)
+      other.class == self.class && other.state == state
+    end
+
+    protected
+
+    def state
+      [@records]
     end
   end
 end

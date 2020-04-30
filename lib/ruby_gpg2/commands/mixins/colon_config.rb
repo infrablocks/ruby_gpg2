@@ -1,13 +1,12 @@
 module RubyGPG2
   module Commands
     module Mixins
-      module GlobalConfig
+      module ColonConfig
         def configure_command(builder, opts)
-          home_directory = opts[:home_directory]
+          with_colons = opts[:with_colons].nil? ? true : opts[:with_colons]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-              '--homedir', home_directory, quoting: '"') if home_directory
+          builder = builder.with_flag('--with-colons') if with_colons
           builder
         end
       end

@@ -21,10 +21,13 @@ module RubyGPG2
   end
 
   class Configuration
-    attr_accessor :binary
+    attr_accessor :binary, :logger, :stdin, :stdout, :stderr
 
     def initialize
       @binary = 'gpg'
+      @stdin = ''
+      @stdout = $stdout
+      @stderr = $stderr
     end
   end
 end

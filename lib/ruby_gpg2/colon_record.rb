@@ -1,3 +1,5 @@
+require 'date'
+
 module RubyGPG2
   class ColonRecord
     TYPES = {

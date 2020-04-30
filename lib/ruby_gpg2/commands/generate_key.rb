@@ -2,11 +2,13 @@ require 'lino'
 
 require_relative 'base'
 require_relative 'mixins/global_config'
+require_relative 'mixins/batch_config'
 
 module RubyGPG2
   module Commands
     class GenerateKey < Base
       include Mixins::GlobalConfig
+      include Mixins::BatchConfig
 
       def configure_command(builder, opts)
         parameter_file_path = opts[:parameter_file_path]
