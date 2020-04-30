@@ -20,6 +20,26 @@ module RubyGPG2
     end
   end
 
+  module ClassMethods
+    def generate_key(opts = {})
+      Commands::GenerateKey.new.execute(opts)
+    end
+
+    def list_public_keys(opts = {})
+      Commands::ListPublicKeys.new.execute(opts)
+    end
+
+    def list_secret_keys(opts = {})
+      Commands::ListSecretKeys.new.execute(opts)
+    end
+  end
+
+  extend ClassMethods
+
+  def self.included(other)
+    other.extend(ClassMethods)
+  end
+
   class Configuration
     attr_accessor :binary, :logger, :stdin, :stdout, :stderr
 
