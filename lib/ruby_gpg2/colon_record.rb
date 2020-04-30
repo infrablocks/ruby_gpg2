@@ -111,9 +111,11 @@ module RubyGPG2
             user_id_hash: user_id_hash(type, fields[7]),
             owner_trust: owner_trust(fields[8]),
             fingerprint: fingerprint(type, fields[9]),
+            key_grip: key_grip(type, fields[9]),
             user_id: user_id(type, fields[9]),
             signature_class: signature_class(fields[10]),
             key_capabilities: key_capabilities(fields[11]),
+            serial_number: serial_number(fields[14]),
             compliance_modes: compliance_modes(fields[17]),
             last_update: last_update(fields[18]),
             origin: origin(fields[19]))
@@ -133,9 +135,11 @@ module RubyGPG2
         :user_id_hash,
         :owner_trust,
         :fingerprint,
+        :key_grip,
         :user_id,
         :signature_class,
         :key_capabilities,
+        :serial_number,
         :compliance_modes,
         :last_update,
         :origin,
@@ -156,9 +160,11 @@ module RubyGPG2
       @user_id_hash = opts[:user_id_hash]
       @owner_trust = opts[:owner_trust]
       @fingerprint = opts[:fingerprint]
+      @key_grip = opts[:key_grip]
       @user_id = opts[:user_id]
       @signature_class = opts[:signature_class]
       @key_capabilities = opts[:key_capabilities]
+      @serial_number = opts[:serial_number]
       @compliance_modes = opts[:compliance_modes]
       @last_update = opts[:last_update]
       @origin = opts[:origin]
@@ -187,9 +193,11 @@ module RubyGPG2
           @user_id_hash,
           @owner_trust,
           @fingerprint,
+          @key_grip,
           @user_id,
           @signature_class,
           @key_capabilities,
+          @serial_number,
           @compliance_modes,
           @last_update,
           @origin,
@@ -245,8 +253,12 @@ module RubyGPG2
       type == :fingerprint ? value : nil
     end
 
+    def self.key_grip(type, value)
+      type == :key_grip ? value : nil
+    end
+
     def self.user_id(type, value)
-      unless type == :fingerprint
+      unless [:fingerprint, :key_grip].include?(type)
         value =~ /.+/ ? value : nil
       end
     end
@@ -257,6 +269,10 @@ module RubyGPG2
 
     def self.key_capabilities(value)
       value =~ /.+/ ? value.chars.map { |c| KEY_CAPABILITIES[c] } : nil
+    end
+
+    def self.serial_number(value)
+      value =~ /.+/ ? value : nil
     end
 
     def self.compliance_modes(value)

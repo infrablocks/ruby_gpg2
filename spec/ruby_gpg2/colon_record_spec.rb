@@ -109,6 +109,71 @@ describe RubyGPG2::ColonRecord do
             )))
       end
 
+      it 'parses a secret key record' do
+        colon_output =
+            "sec:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC:::+:::23::0:"
+
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+
+        expect(key_list_record)
+            .to(eq(RubyGPG2::ColonRecord.new(
+                raw: "sec:u:2048:1:1A16916844CE9D82:" +
+                    "1333003000:::u:::scESC:::+:::23::0:",
+                type: :secret_key,
+                validity: :ultimate,
+                key_length: 2048,
+                key_algorithm: :rsa_encrypt_or_sign,
+                key_id: '1A16916844CE9D82',
+                creation_date: DateTime.strptime('1333003000', '%s'),
+                owner_trust: :ultimate,
+                key_capabilities: [
+                    :sign,
+                    :certify,
+                    :primary_encrypt,
+                    :primary_sign,
+                    :primary_certify
+                ],
+                serial_number: '+',
+                compliance_modes: [:de_vs],
+                origin: '0')))
+      end
+
+      it 'parses a key grip record' do
+        colon_output =
+            "grp:::::::::D911410A3892C4C391614343D873FCF6318E8B31:"
+
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+
+        expect(key_list_record)
+            .to(eq(RubyGPG2::ColonRecord.new(
+                raw: "grp:::::::::D911410A3892C4C391614343D873FCF6318E8B31:",
+                type: :key_grip,
+                key_grip: 'D911410A3892C4C391614343D873FCF6318E8B31')))
+      end
+
+      it 'parses a secret subkey record' do
+        colon_output =
+            "ssb:u:2048:1:FD7CF2BF6B89D9EA:1333003000::::::e:::+:::23:"
+
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+
+        expect(key_list_record)
+            .to(eq(RubyGPG2::ColonRecord.new(
+                raw: "ssb:u:2048:1:FD7CF2BF6B89D9EA:" +
+                    "1333003000::::::e:::+:::23:",
+                type: :secret_sub_key,
+                validity: :ultimate,
+                key_length: 2048,
+                key_algorithm: :rsa_encrypt_or_sign,
+                key_id: 'FD7CF2BF6B89D9EA',
+                creation_date: DateTime.strptime('1333003000', '%s'),
+                key_capabilities: [
+                    :encrypt
+                ],
+                serial_number: '+',
+                compliance_modes: [:de_vs])))
+      end
+
       it 'parses a trust database information record' do
         colon_output = "tru::1:1588023210:1636807690:3:1:5"
 
@@ -363,6 +428,14 @@ describe RubyGPG2::ColonRecord do
           .to(eq('41D2606F66C3FF28874362B61A16916844CE9D82'))
     end
 
+    it 'uses the key grip from the provided options' do
+      key_list_record = RubyGPG2::ColonRecord.new(
+          key_grip: '41D2606F66C3FF28874362B61A16916844CE9D82')
+
+      expect(key_list_record.key_grip)
+          .to(eq('41D2606F66C3FF28874362B61A16916844CE9D82'))
+    end
+
     it 'uses the user ID from the provided options' do
       key_list_record = RubyGPG2::ColonRecord.new(
           user_id: 'James Jones <james.jones@example.com>')
@@ -388,12 +461,11 @@ describe RubyGPG2::ColonRecord do
           .to(eq([:encrypt]))
     end
 
-    it 'uses the compliance modes from the provided options' do
+    it 'uses the serial number from the provided options' do
       key_list_record = RubyGPG2::ColonRecord.new(
-          compliance_modes: [:rfc_4880bis])
+          serial_number: '#')
 
-      expect(key_list_record.compliance_modes)
-          .to(eq([:rfc_4880bis]))
+      expect(key_list_record.serial_number).to(eq('#'))
     end
 
     it 'uses the compliance modes from the provided options' do
@@ -556,6 +628,16 @@ describe RubyGPG2::ColonRecord do
           .not_to(eq(key_list_record_2))
     end
 
+    it 'is not equal if key grip is different' do
+      key_list_record_1 = build_record(
+          key_grip: '41D2606F66C3FF28874362B61A16916844CE9D82')
+      key_list_record_2 = build_record(
+          key_grip: '380A79B836ECDE7D65981ECF9A160A601DF21B4B')
+
+      expect(key_list_record_1)
+          .not_to(eq(key_list_record_2))
+    end
+
     it 'is not equal if user ID is different' do
       key_list_record_1 = build_record(
           user_id: 'James Jones <james.jones@example.com>')
@@ -599,6 +681,16 @@ describe RubyGPG2::ColonRecord do
           compliance_modes: [:de_vs])
       key_list_record_2 = build_record(
           compliance_modes: [:de_vs, :rfc_4880bis])
+
+      expect(key_list_record_1)
+          .not_to(eq(key_list_record_2))
+    end
+
+    it 'is not equal if serial numbers are different' do
+      key_list_record_1 = build_record(
+          serial_number: '+')
+      key_list_record_2 = build_record(
+          serial_number: '#')
 
       expect(key_list_record_1)
           .not_to(eq(key_list_record_2))
