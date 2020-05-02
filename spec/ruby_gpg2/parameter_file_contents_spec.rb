@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe RubyGPG2::ParameterFile do
+describe RubyGPG2::ParameterFileContents do
   context 'initialize' do
     it 'defaults the key type to RSA' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -14,7 +14,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified key type when provided' do
       key_type = 'DSA'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           key_type: key_type
@@ -24,7 +24,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'defaults to a key length of 2048' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -35,7 +35,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified key length when provided' do
       key_length = 4096
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           key_length: key_length
@@ -45,7 +45,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'defaults the subkey type to RSA' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -56,7 +56,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified subkey type when provided' do
       subkey_type = 'ELG'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           subkey_type: subkey_type
@@ -66,7 +66,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'defaults to a subkey length of 2048' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -77,7 +77,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified subkey length when provided' do
       subkey_length = 4096
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           subkey_length: subkey_length
@@ -89,7 +89,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified owner email' do
       owner_name = 'Cara Smith'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: owner_name,
           owner_email: 'cara.smith@example.com'
       })
@@ -101,7 +101,7 @@ describe RubyGPG2::ParameterFile do
       owner_name = nil
 
       expect {
-        RubyGPG2::ParameterFile.new({
+        RubyGPG2::ParameterFileContents.new({
             owner_name: owner_name,
             owner_email: 'cara.smith@example.com'
         })
@@ -113,7 +113,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified owner email' do
       owner_email = 'cara.smith@example.com'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: owner_email
       })
@@ -125,7 +125,7 @@ describe RubyGPG2::ParameterFile do
       owner_email = nil
 
       expect {
-        RubyGPG2::ParameterFile.new({
+        RubyGPG2::ParameterFileContents.new({
             owner_name: 'Cara Smith',
             owner_email: owner_email
         })
@@ -135,7 +135,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'has no owner comment by default' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -146,7 +146,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified owner comment when provided' do
       owner_comment = 'Work'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           owner_comment: owner_comment
@@ -156,7 +156,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'has an expiry of never by default' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -167,7 +167,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified expiry when provided' do
       expiry = '2y'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           expiry: expiry
@@ -177,7 +177,7 @@ describe RubyGPG2::ParameterFile do
     end
 
     it 'has no passphrase by default' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -188,7 +188,7 @@ describe RubyGPG2::ParameterFile do
     it 'uses the specified passphrase when provided' do
       passphrase = 'super-secret-123'
 
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           passphrase: passphrase
@@ -200,7 +200,7 @@ describe RubyGPG2::ParameterFile do
 
   context "to_s" do
     it 'includes all parameters when specified' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           key_type: 'DSA',
           key_length: 4096,
           subkey_type: 'ELG',
@@ -228,7 +228,7 @@ Passphrase: super-secret-123
     end
 
     it 'does not include unspecified parameters' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           expiry: '2y'
@@ -248,7 +248,7 @@ Expire-Date: 2y
     end
 
     it 'uses an expire-date of 0 when expiry is :never' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com'
       })
@@ -257,7 +257,7 @@ Expire-Date: 2y
     end
 
     it 'does not include key length when key type is default' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           key_type: :default
@@ -270,7 +270,7 @@ Expire-Date: 2y
     end
 
     it 'does not include subkey length when subkey type is default' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           subkey_type: :default
@@ -283,7 +283,7 @@ Expire-Date: 2y
     end
 
     it 'does not include subkey length when subkey type is nil' do
-      parameter_file = RubyGPG2::ParameterFile.new({
+      parameter_file = RubyGPG2::ParameterFileContents.new({
           owner_name: 'Cara Smith',
           owner_email: 'cara.smith@example.com',
           subkey_type: nil
@@ -315,15 +315,74 @@ Subkey-Length: 2048
 Name-Real: Cara Smith
 Name-Email: cara.smith@example.com
 Expire-Date: 0
-EOF
-))
+          EOF
+          ))
 
-      RubyGPG2::ParameterFile
-          .new({
+      RubyGPG2::ParameterFileContents
+          .new(
               owner_name: 'Cara Smith',
-              owner_email: 'cara.smith@example.com',
-          })
+              owner_email: 'cara.smith@example.com')
           .write_to(path)
+    end
+  end
+
+  context 'in_temp_file' do
+    it 'writes the contents to a temp file under the specified path and ' +
+        'executes the block with the file' do
+      path = 'some/directory'
+
+      file = double('file')
+      expect(Tempfile)
+          .to(receive(:create)
+              .with('parameter-file', path)
+              .and_yield(file))
+      expect(file)
+          .to(receive(:write)
+              .with(<<-EOF
+Key-Type: RSA
+Key-Length: 2048
+Subkey-Type: RSA
+Subkey-Length: 2048
+Name-Real: Cara Smith
+Name-Email: cara.smith@example.com
+Expire-Date: 0
+          EOF
+          ).ordered)
+      expect(file).to(receive(:flush).ordered)
+
+      captured_file = nil
+
+      RubyGPG2::ParameterFileContents
+          .new(
+              owner_name: 'Cara Smith',
+              owner_email: 'cara.smith@example.com')
+          .in_temp_file(path) do |f|
+        captured_file = f
+      end
+
+      expect(captured_file).to(be(file))
+    end
+
+    it 'uses the default tmpdir by default' do
+      file = double('file')
+      expect(Tempfile)
+          .to(receive(:create)
+              .with('parameter-file', nil)
+              .and_yield(file))
+      allow(file).to(receive(:write))
+      allow(file).to(receive(:flush))
+
+      captured_file = nil
+
+      RubyGPG2::ParameterFileContents
+          .new(
+              owner_name: 'Cara Smith',
+              owner_email: 'cara.smith@example.com')
+          .in_temp_file do |f|
+        captured_file = f
+      end
+
+      expect(captured_file).to(be(file))
     end
   end
 end

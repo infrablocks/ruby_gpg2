@@ -1,5 +1,7 @@
+require 'tempfile'
+
 module RubyGPG2
-  class ParameterFile
+  class ParameterFileContents
     attr_reader(
         :key_type,
         :key_length,
@@ -45,6 +47,14 @@ module RubyGPG2
     def write_to(path)
       File.open(path, 'w') do |f|
         f.write(to_s)
+      end
+    end
+
+    def in_temp_file(tmpdir = nil)
+      Tempfile.create('parameter-file', tmpdir) do |f|
+        f.write(to_s)
+        f.flush
+        yield f
       end
     end
 
