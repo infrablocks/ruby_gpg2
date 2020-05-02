@@ -2,6 +2,8 @@ require 'date'
 
 module RubyGPG2
   class ColonRecord
+    USER_ID_REGEX = /^(.*?) (?:\((.*)\) )?<(.*)>$/
+
     TYPES = {
         'pub' => :public_key,
         'crt' => :x509_certificate,
@@ -171,6 +173,32 @@ module RubyGPG2
       @new_key_signer_marginal_count = opts[:new_key_signer_marginal_count]
       @new_key_signer_complete_count = opts[:new_key_signer_complete_count]
       @maximum_certificate_chain_depth = opts[:maximum_certificate_chain_depth]
+    end
+
+    def fingerprint_record?
+      type == :fingerprint
+    end
+
+    def user_id_record?
+      type == :user_id
+    end
+
+    def user_name
+      if (match = user_id&.match(USER_ID_REGEX))
+        match[1]
+      end
+    end
+
+    def user_comment
+      if (match = user_id&.match(USER_ID_REGEX))
+        match[2]
+      end
+    end
+
+    def user_email
+      if (match = user_id&.match(USER_ID_REGEX))
+        match[3]
+      end
     end
 
     def ==(other)

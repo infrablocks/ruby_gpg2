@@ -2,6 +2,8 @@ require 'ruby_gpg2/version'
 require 'ruby_gpg2/commands'
 require 'ruby_gpg2/parameter_file'
 require 'ruby_gpg2/colon_output'
+require 'ruby_gpg2/key'
+require 'ruby_gpg2/user_id'
 
 module RubyGPG2
   class << self

@@ -517,6 +517,187 @@ describe RubyGPG2::ColonRecord do
     end
   end
 
+  context 'user ID methods' do
+    context 'user_id_record?' do
+      it 'returns true when record is a user_id' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: "uid:u::::1333003000::" +
+                "6D9560936837E5AC5007524183B9F354E4F5308C" +
+                "::Toby Clemson <tobyclemson@gmail.com>::::::::::0:",
+            type: :user_id,
+            validity: :ultimate,
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            user_id_hash: '6D9560936837E5AC5007524183B9F354E4F5308C',
+            user_id: 'Toby Clemson <tobyclemson@gmail.com>',
+            origin: '0')
+
+        expect(colon_record.user_id_record?).to(be(true))
+      end
+
+      it 'returns false when record is not a user_id' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: 'pub:u:2048:1:1A16916844CE9D82:' +
+                '1333003000:::u:::scESC::::::23::0:',
+            type: :public_key,
+            validity: :ultimate,
+            key_length: 2048,
+            key_algorithm: :rsa_encrypt_or_sign,
+            key_id: '1A16916844CE9D82',
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            owner_trust: :ultimate,
+            key_capabilities: [
+                :sign,
+                :certify,
+                :primary_encrypt,
+                :primary_sign,
+                :primary_certify
+            ],
+            compliance_modes: [:de_vs],
+            origin: '0')
+
+        expect(colon_record.user_id_record?).to(be(false))
+      end
+    end
+
+    context 'user_name' do
+      it 'extracts the user name from the user id when present' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: "uid:u::::1333003000::" +
+                "6D9560936837E5AC5007524183B9F354E4F5308C" +
+                "::Toby Clemson <tobyclemson@gmail.com>::::::::::0:",
+            type: :user_id,
+            validity: :ultimate,
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            user_id_hash: '6D9560936837E5AC5007524183B9F354E4F5308C',
+            user_id: 'Toby Clemson <tobyclemson@gmail.com>',
+            origin: '0')
+
+        expect(colon_record.user_name).to(eq('Toby Clemson'))
+      end
+
+      it 'return nil when user id is missing' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: 'pub:u:2048:1:1A16916844CE9D82:' +
+                '1333003000:::u:::scESC::::::23::0:',
+            type: :public_key,
+            validity: :ultimate,
+            key_length: 2048,
+            key_algorithm: :rsa_encrypt_or_sign,
+            key_id: '1A16916844CE9D82',
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            owner_trust: :ultimate,
+            key_capabilities: [
+                :sign,
+                :certify,
+                :primary_encrypt,
+                :primary_sign,
+                :primary_certify
+            ],
+            compliance_modes: [:de_vs],
+            origin: '0')
+
+        expect(colon_record.user_name).to(be_nil)
+      end
+    end
+
+    context 'user_comment' do
+      it 'extracts the user comment from the user id when present' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: "uid:u::::1333003000::" +
+                "6D9560936837E5AC5007524183B9F354E4F5308C" +
+                "::Toby Clemson (Personal) <tobyclemson@gmail.com>::::::::::0:",
+            type: :user_id,
+            validity: :ultimate,
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            user_id_hash: '6D9560936837E5AC5007524183B9F354E4F5308C',
+            user_id: 'Toby Clemson (Personal) <tobyclemson@gmail.com>',
+            origin: '0')
+
+        expect(colon_record.user_comment).to(eq('Personal'))
+      end
+
+      it 'returns nil when the user id contains no comment' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: "uid:u::::1333003000::" +
+                "6D9560936837E5AC5007524183B9F354E4F5308C" +
+                "::Toby Clemson <tobyclemson@gmail.com>::::::::::0:",
+            type: :user_id,
+            validity: :ultimate,
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            user_id_hash: '6D9560936837E5AC5007524183B9F354E4F5308C',
+            user_id: 'Toby Clemson <tobyclemson@gmail.com>',
+            origin: '0')
+
+        expect(colon_record.user_comment).to(be_nil)
+      end
+
+      it 'return nil when user id is missing' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: 'pub:u:2048:1:1A16916844CE9D82:' +
+                '1333003000:::u:::scESC::::::23::0:',
+            type: :public_key,
+            validity: :ultimate,
+            key_length: 2048,
+            key_algorithm: :rsa_encrypt_or_sign,
+            key_id: '1A16916844CE9D82',
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            owner_trust: :ultimate,
+            key_capabilities: [
+                :sign,
+                :certify,
+                :primary_encrypt,
+                :primary_sign,
+                :primary_certify
+            ],
+            compliance_modes: [:de_vs],
+            origin: '0')
+
+        expect(colon_record.user_comment).to(be_nil)
+      end
+    end
+
+    context 'user_email' do
+      it 'extracts the user email from the user id when present' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: "uid:u::::1333003000::" +
+                "6D9560936837E5AC5007524183B9F354E4F5308C" +
+                "::Toby Clemson <tobyclemson@gmail.com>::::::::::0:",
+            type: :user_id,
+            validity: :ultimate,
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            user_id_hash: '6D9560936837E5AC5007524183B9F354E4F5308C',
+            user_id: 'Toby Clemson <tobyclemson@gmail.com>',
+            origin: '0')
+
+        expect(colon_record.user_email).to(eq('tobyclemson@gmail.com'))
+      end
+
+      it 'return nil when user id is missing' do
+        colon_record = RubyGPG2::ColonRecord.new(
+            raw: 'pub:u:2048:1:1A16916844CE9D82:' +
+                '1333003000:::u:::scESC::::::23::0:',
+            type: :public_key,
+            validity: :ultimate,
+            key_length: 2048,
+            key_algorithm: :rsa_encrypt_or_sign,
+            key_id: '1A16916844CE9D82',
+            creation_date: DateTime.strptime('1333003000', '%s'),
+            owner_trust: :ultimate,
+            key_capabilities: [
+                :sign,
+                :certify,
+                :primary_encrypt,
+                :primary_sign,
+                :primary_certify
+            ],
+            compliance_modes: [:de_vs],
+            origin: '0')
+
+        expect(colon_record.user_email).to(be_nil)
+      end
+    end
+  end
+
   context 'equality' do
     it 'is equal when all properties are equal' do
       key_list_record_1 = build_record
