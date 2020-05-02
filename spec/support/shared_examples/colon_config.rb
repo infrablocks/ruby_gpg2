@@ -1,6 +1,6 @@
 shared_examples(
     "a command with colon config"
-) do |command_name, arguments = [], options = {}|
+) do |command_name, records, output_method, arguments = [], options = {}|
   let(:arguments_string) do
     arguments.empty? ? "" : " #{arguments.join(" ")}"
   end
@@ -46,46 +46,36 @@ shared_examples(
   it 'parses the output by default' do
     command = subject.class.new
 
-    colon_record_1 =
-        'pub:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC::::::23::0:'
-    colon_record_2 =
-        'fpr:::::::::41D2606F66C3FF28874362B61A16916844CE9D82:'
-
     expect(Open4).to(
         receive(:spawn)
             .with(/^#{binary}.* --with-colons .*#{command_string}$/,
                 any_args) { |_, opts|
-              opts[:stdout].write("#{colon_record_1}\n#{colon_record_2}\n")
+              opts[:stdout].write(records.join("\n"))
             })
 
     result = command.execute
 
-    expect(result)
-        .to(eq(RubyGPG2::ColonOutput.new([
-            RubyGPG2::ColonRecord.parse(colon_record_1),
-            RubyGPG2::ColonRecord.parse(colon_record_2)
-        ])))
+    expected_colon_output = RubyGPG2::ColonOutput.new(
+        records.map { |r| RubyGPG2::ColonRecord.parse(r) })
+    expected_result = expected_colon_output.send(output_method)
+
+    expect(result).to(eq(expected_result))
   end
 
   it 'leaves output un-parsed when requested' do
     command = subject.class.new
 
-    colon_record_1 =
-        'pub:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC::::::23::0:'
-    colon_record_2 =
-        'fpr:::::::::41D2606F66C3FF28874362B61A16916844CE9D82:'
-
     expect(Open4).to(
         receive(:spawn)
             .with(/^#{binary}.* --with-colons .*#{command_string}$/,
                 any_args) { |_, opts|
-              opts[:stdout].write("#{colon_record_1}\n#{colon_record_2}\n")
+              opts[:stdout].write(records.join("\n"))
             })
 
     result = command.execute(
         with_colons: true,
         parse_output: false)
 
-    expect(result).to(eq("#{colon_record_1}\n#{colon_record_2}\n"))
+    expect(result).to(eq(records.join("\n")))
   end
 end

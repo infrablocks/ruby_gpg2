@@ -35,5 +35,10 @@ describe RubyGPG2::Commands::ListSecretKeys do
   end
 
   it_behaves_like "a command with global config", '--list-secret-keys'
-  it_behaves_like "a command with colon config", '--list-secret-keys'
+  it_behaves_like "a command with colon config", '--list-secret-keys',
+      [
+          'sec:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC:::+:::23::0:',
+          'fpr:::::::::41D2606F66C3FF28874362B61A16916844CE9D82:'
+      ],
+      :secret_keys
 end

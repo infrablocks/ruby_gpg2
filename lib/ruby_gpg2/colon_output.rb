@@ -14,6 +14,10 @@ module RubyGPG2
       @records = records
     end
 
+    def secret_keys
+      []
+    end
+
     def public_keys
       public_key_indices = @records
           .each_with_index

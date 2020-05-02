@@ -17,6 +17,10 @@ module RubyGPG2
         builder = super(builder, opts)
         builder
       end
+
+      def do_after(opts)
+        super(opts.merge(output_method: :secret_keys))
+      end
     end
   end
 end

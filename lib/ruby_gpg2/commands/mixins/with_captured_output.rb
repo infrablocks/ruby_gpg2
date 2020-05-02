@@ -12,8 +12,10 @@ module RubyGPG2
 
         def do_after(opts)
           parse_output = opts[:parse_output].nil? ? true : opts[:parse_output]
+          output_method = opts[:output_method]
+
           parse_output ?
-              ColonOutput.parse(stdout.string) :
+              ColonOutput.parse(stdout.string).send(output_method) :
               stdout.string
         end
       end
