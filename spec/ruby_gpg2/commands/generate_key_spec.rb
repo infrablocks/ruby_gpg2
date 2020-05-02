@@ -3,6 +3,8 @@ require 'spec_helper'
 require_relative '../../support/shared_examples/global_config'
 require_relative '../../support/shared_examples/batch_config'
 require_relative '../../support/shared_examples/passphrase_config'
+require_relative '../../support/shared_examples/pinentry_config'
+require_relative '../../support/shared_examples/without_passphrase'
 
 describe RubyGPG2::Commands::GenerateKey do
   before(:each) do
@@ -38,6 +40,8 @@ describe RubyGPG2::Commands::GenerateKey do
   it_behaves_like "a command with global config", '--generate-key'
   it_behaves_like "a command with batch config", '--generate-key'
   it_behaves_like "a command with passphrase config", '--generate-key'
+  it_behaves_like "a command with pinentry config", '--generate-key'
+  it_behaves_like "a command allowing no passphrase", '--generate-key'
 
   it 'passes the parameter file as an argument when supplied' do
     parameter_file_path = 'some/parameter/file'

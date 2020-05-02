@@ -5,6 +5,7 @@ require_relative 'mixins/global_config'
 require_relative 'mixins/batch_config'
 require_relative 'mixins/passphrase_config'
 require_relative 'mixins/pinentry_config'
+require_relative 'mixins/without_passphrase'
 
 module RubyGPG2
   module Commands
@@ -13,6 +14,7 @@ module RubyGPG2
       include Mixins::BatchConfig
       include Mixins::PassphraseConfig
       include Mixins::PinentryConfig
+      include Mixins::WithoutPassphrase
 
       def configure_command(builder, opts)
         parameter_file_path = opts[:parameter_file_path]
