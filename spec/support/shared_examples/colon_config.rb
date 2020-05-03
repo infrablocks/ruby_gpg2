@@ -1,6 +1,6 @@
 shared_examples(
     "a command with colon config"
-) do |command_name, records, output_method, arguments = [], options = {}|
+) do |command_name, records, arguments = [], options = {}|
   let(:arguments_string) do
     arguments.empty? ? "" : " #{arguments.join(" ")}"
   end
@@ -53,13 +53,10 @@ shared_examples(
               opts[:stdout].write(records.join("\n"))
             })
 
-    result = command.execute
+    result = command.execute(options)
 
-    expected_colon_output = RubyGPG2::ColonOutput.new(
-        records.map { |r| RubyGPG2::ColonRecord.parse(r) })
-    expected_result = expected_colon_output.send(output_method)
-
-    expect(result).to(eq(expected_result))
+    expect(result.output)
+        .to(eq(RubyGPG2::ColonOutput.parse(records.join("\n"))))
   end
 
   it 'leaves output un-parsed when requested' do
@@ -76,6 +73,6 @@ shared_examples(
         with_colons: true,
         parse_output: false)
 
-    expect(result).to(eq(records.join("\n")))
+    expect(result.output).to(eq(records.join("\n")))
   end
 end

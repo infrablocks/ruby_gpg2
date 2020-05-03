@@ -39,6 +39,5 @@ describe RubyGPG2::Commands::ListPublicKeys do
       [
           'pub:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC::::::23::0:',
           'fpr:::::::::41D2606F66C3FF28874362B61A16916844CE9D82:'
-      ],
-      :public_keys
+      ]
 end

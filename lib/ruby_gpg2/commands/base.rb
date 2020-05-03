@@ -14,13 +14,15 @@ module RubyGPG2
         builder = instantiate_builder
 
         do_before(opts)
-        builder = configure_command(builder, opts)
-        builder
-            .build
-            .execute(
-                stdin: stdin,
-                stdout: stdout,
-                stderr: stderr)
+        do_around(opts) do |updated_opts|
+          builder = configure_command(builder, updated_opts)
+          builder
+              .build
+              .execute(
+                  stdin: stdin,
+                  stdout: stdout,
+                  stderr: stderr)
+        end
         do_after(opts)
       end
 
@@ -39,6 +41,10 @@ module RubyGPG2
 
       def configure_command(builder, opts)
         builder
+      end
+
+      def do_around(opts)
+        yield opts
       end
 
       def do_after(opts)

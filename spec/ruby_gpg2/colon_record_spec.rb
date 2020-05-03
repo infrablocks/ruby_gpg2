@@ -5,12 +5,12 @@ describe RubyGPG2::ColonRecord do
   context 'parsing' do
     context 'for example records' do
       it 'parses a public key record' do
-        colon_output =
+        raw_colon_record =
             "pub:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC::::::23::0:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        colon_record = RubyGPG2::ColonRecord.parse(raw_colon_record)
 
-        expect(key_list_record)
+        expect(colon_record)
             .to(eq(RubyGPG2::ColonRecord.new(
                 raw: 'pub:u:2048:1:1A16916844CE9D82:' +
                     '1333003000:::u:::scESC::::::23::0:',
@@ -34,10 +34,10 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a fingerprint record' do
-        colon_output =
+        colon_record =
             "fpr:::::::::41D2606F66C3FF28874362B61A16916844CE9D82:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -47,11 +47,11 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a user ID record' do
-        colon_output =
+        colon_record =
             "uid:u::::1333003000::6D9560936837E5AC5007524183B9F354E4F5308C" +
                 "::Toby Clemson <tobyclemson@gmail.com>::::::::::0:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -67,10 +67,10 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a sub key record' do
-        colon_output =
+        colon_record =
             "sub:r:2048:1:5374249938E895F1:1433361866:1685649866:::::s::::::23:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -89,11 +89,11 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a signature record' do
-        colon_output =
+        colon_record =
             "sig:::1:1A16916844CE9D82:1333003000::::" +
                 "Toby Clemson <tobyclemson@gmail.com>:13x:::::2:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -110,10 +110,10 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a secret key record' do
-        colon_output =
+        colon_record =
             "sec:u:2048:1:1A16916844CE9D82:1333003000:::u:::scESC:::+:::23::0:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -139,10 +139,10 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a key grip record' do
-        colon_output =
+        colon_record =
             "grp:::::::::D911410A3892C4C391614343D873FCF6318E8B31:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -152,10 +152,10 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a secret subkey record' do
-        colon_output =
+        colon_record =
             "ssb:u:2048:1:FD7CF2BF6B89D9EA:1333003000::::::e:::+:::23:"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -175,9 +175,9 @@ describe RubyGPG2::ColonRecord do
       end
 
       it 'parses a trust database information record' do
-        colon_output = "tru::1:1588023210:1636807690:3:1:5"
+        colon_record = "tru::1:1588023210:1636807690:3:1:5"
 
-        key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+        key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
         expect(key_list_record)
             .to(eq(RubyGPG2::ColonRecord.new(
@@ -215,9 +215,9 @@ describe RubyGPG2::ColonRecord do
           'cfg' => :configuration_data
       }.each do |type_string, type|
         it "handles records of type #{type_string}" do
-          colon_output = "#{type_string}::::::::::::::::::::"
+          colon_record = "#{type_string}::::::::::::::::::::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.type).to(eq(type))
         end
@@ -241,9 +241,9 @@ describe RubyGPG2::ColonRecord do
           's' => :special
       }.each do |validity_string, validity|
         it "handles records with validity #{validity_string}" do
-          colon_output = "pub:#{validity_string}:::::::::::::::::::"
+          colon_record = "pub:#{validity_string}:::::::::::::::::::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.validity).to(eq(validity))
         end
@@ -261,9 +261,9 @@ describe RubyGPG2::ColonRecord do
           '19' => :ecdsa,
       }.each do |algorithm_identifier, algorithm|
         it "handles records with algorithm #{algorithm_identifier}" do
-          colon_output = "pub:::#{algorithm_identifier}:::::::::::::::::"
+          colon_record = "pub:::#{algorithm_identifier}:::::::::::::::::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.key_algorithm).to(eq(algorithm))
         end
@@ -279,9 +279,9 @@ describe RubyGPG2::ColonRecord do
           'u' => :ultimate,
       }.each do |owner_trust_string, owner_trust|
         it "handles records with owner trust #{owner_trust_string}" do
-          colon_output = "pub::::::::#{owner_trust_string}::::::::::::"
+          colon_record = "pub::::::::#{owner_trust_string}::::::::::::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.owner_trust).to(eq(owner_trust))
         end
@@ -301,9 +301,9 @@ describe RubyGPG2::ColonRecord do
           '?' => :unknown
       }.each do |key_capability_string, key_capability|
         it "handles records with key capability #{key_capability_string}" do
-          colon_output = "pub:::::::::::#{key_capability_string}:::::::::"
+          colon_record = "pub:::::::::::#{key_capability_string}:::::::::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.key_capabilities)
               .to(eq([key_capability]))
@@ -318,9 +318,9 @@ describe RubyGPG2::ColonRecord do
           '6001' => :roca_screening_hit
       }.each do |compliance_mode_string, compliance_mode|
         it "handles records with compliance mode #{compliance_mode_string}" do
-          colon_output = "pub:::::::::::::::::#{compliance_mode_string}:::"
+          colon_record = "pub:::::::::::::::::#{compliance_mode_string}:::"
 
-          key_list_record = RubyGPG2::ColonRecord.parse(colon_output)
+          key_list_record = RubyGPG2::ColonRecord.parse(colon_record)
 
           expect(key_list_record.compliance_modes)
               .to(eq([compliance_mode]))
