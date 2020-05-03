@@ -24,8 +24,20 @@ module RubyGPG2
   end
 
   module ClassMethods
+    def export(opts = {})
+      Commands::Export.new.execute(opts)
+    end
+
+    def export_secret_keys(opts = {})
+      Commands::ExportSecretKeys.new.execute(opts)
+    end
+
     def generate_key(opts = {})
       Commands::GenerateKey.new.execute(opts)
+    end
+
+    def import(opts = {})
+      Commands::Import.new.execute(opts)
     end
 
     def list_public_keys(opts = {})
