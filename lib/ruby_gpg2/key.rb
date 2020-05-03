@@ -9,6 +9,7 @@ module RubyGPG2
         :creation_date,
         :owner_trust,
         :capabilities,
+        :serial_number,
         :compliance_modes,
         :origin,
         :fingerprint,
@@ -23,6 +24,7 @@ module RubyGPG2
       @creation_date = opts[:creation_date]
       @owner_trust = opts[:owner_trust]
       @capabilities = opts[:capabilities]
+      @serial_number = opts[:serial_number]
       @compliance_modes = opts[:compliance_modes]
       @origin = opts[:origin]
       @fingerprint = opts[:fingerprint]
@@ -49,6 +51,7 @@ module RubyGPG2
           @creation_date,
           @owner_trust,
           @capabilities,
+          @serial_number,
           @compliance_modes,
           @origin,
           @fingerprint
