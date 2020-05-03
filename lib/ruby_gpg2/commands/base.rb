@@ -1,5 +1,7 @@
 require 'lino'
 
+require_relative './result'
+
 module RubyGPG2
   module Commands
     class Base
@@ -48,6 +50,7 @@ module RubyGPG2
       end
 
       def do_after(opts)
+        Result.new
       end
     end
   end

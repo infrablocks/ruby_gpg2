@@ -13,6 +13,14 @@ module RubyGPG2
       @lines = lines
     end
 
+    def filter_by_type(type)
+      StatusOutput.new(@lines.filter { |l| l.type == type })
+    end
+
+    def first_line
+      @lines.first
+    end
+
     def ==(other)
       other.class == self.class && other.state == state
     end
