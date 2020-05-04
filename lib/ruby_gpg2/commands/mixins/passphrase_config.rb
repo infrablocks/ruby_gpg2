@@ -7,7 +7,7 @@ module RubyGPG2
 
           builder = super(builder, opts)
           builder = builder.with_option(
-                '--passphrase', passphrase, quoting: "'") if passphrase
+                '--passphrase', passphrase, quoting: '"') if passphrase
           builder
         end
       end
