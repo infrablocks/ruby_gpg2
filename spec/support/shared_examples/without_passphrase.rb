@@ -13,7 +13,7 @@ shared_examples(
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^#{binary}.* --passphrase='' .*#{command_string}$/,
+            .with(/^#{binary}.* --passphrase="" .*#{command_string}$/,
                 any_args))
 
     command.execute(
