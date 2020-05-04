@@ -24,7 +24,7 @@ shared_examples(
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^#{binary}.* --status-file=.*#{command_string}$/,
+            .with(/^#{binary}.* --status-file .*#{command_string}$/,
                 any_args))
 
     command.execute(
@@ -56,7 +56,7 @@ shared_examples(
     allow(Open4).to(
         receive(:spawn)
             .with(
-                /^#{binary}.* --status-file="some\/path" .*#{command_string}$/,
+                /^#{binary}.* --status-file "some\/path" .*#{command_string}$/,
                 any_args))
     allow(File)
         .to(receive(:read)
@@ -86,7 +86,7 @@ shared_examples(
     allow(Open4).to(
         receive(:spawn)
             .with(
-                /^#{binary}.* --status-file="some\/path" .*#{command_string}$/,
+                /^#{binary}.* --status-file "some\/path" .*#{command_string}$/,
                 any_args))
     allow(File)
         .to(receive(:read)
@@ -112,7 +112,7 @@ shared_examples(
     allow(Open4).to(
         receive(:spawn)
             .with(
-                /^#{binary}.* --status-file="some\/path" .*#{command_string}$/,
+                /^#{binary}.* --status-file "some\/path" .*#{command_string}$/,
                 any_args))
     allow(File)
         .to(receive(:read)

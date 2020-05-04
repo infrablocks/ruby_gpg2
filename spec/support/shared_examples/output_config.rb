@@ -27,7 +27,7 @@ shared_examples(
     expect(Open4).to(
         receive(:spawn)
             .with(
-                /^#{binary}.* --output="#{output_file_path}" .*#{command_string}$/,
+                /^#{binary}.* --output "#{output_file_path}" .*#{command_string}$/,
                 any_args))
 
     command.execute(

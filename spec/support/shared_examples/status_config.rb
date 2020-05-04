@@ -24,7 +24,7 @@ shared_examples(
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^#{binary}.* --status-file="some\/status\/file" .*#{command_string}$/,
+            .with(/^#{binary}.* --status-file "some\/status\/file" .*#{command_string}$/,
                 any_args))
 
     command.execute(

@@ -24,7 +24,7 @@ shared_examples(
 
     expect(Open4).to(
         receive(:spawn)
-            .with(/^#{binary}.* --pinentry-mode=loopback .*#{command_string}$/,
+            .with(/^#{binary}.* --pinentry-mode loopback .*#{command_string}$/,
                 any_args))
 
     command.execute(

@@ -35,7 +35,6 @@ module RubyGPG2
       def instantiate_builder
         Lino::CommandLineBuilder
             .for_command(binary)
-            .with_option_separator('=')
       end
 
       def do_before(opts)

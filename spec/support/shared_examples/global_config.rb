@@ -28,7 +28,7 @@ shared_examples(
     expect(Open4).to(
         receive(:spawn)
             .with(
-                /^#{binary}.* --homedir="#{home_directory}" .*#{command_string}$/,
+                /^#{binary}.* --homedir "#{home_directory}" .*#{command_string}$/,
                 any_args))
 
     command.execute(
