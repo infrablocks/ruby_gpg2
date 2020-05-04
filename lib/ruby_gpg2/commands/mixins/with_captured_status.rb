@@ -8,7 +8,8 @@ module RubyGPG2
       module WithCapturedStatus
         def do_around(opts)
           if opts[:with_status]
-            Tempfile.create do |f|
+            Tempfile.create(
+                'status-file', opts[:work_directory]) do |f|
               yield opts.merge(status_file: f.path)
               @status = File.read(f.path)
             end
@@ -18,9 +19,12 @@ module RubyGPG2
         end
 
         def do_after(opts)
+          parse_status = opts[:parse_status].nil? ? true : opts[:parse_status]
           if opts[:with_status]
             super(opts.merge(
-                status: StatusOutput.parse(@status)))
+                status: parse_status ?
+                    StatusOutput.parse(@status) :
+                    @status))
           else
             super(opts)
           end
