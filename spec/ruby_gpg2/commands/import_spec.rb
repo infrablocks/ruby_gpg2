@@ -2,6 +2,8 @@ require 'spec_helper'
 
 require_relative '../../support/shared_examples/global_config'
 require_relative '../../support/shared_examples/batch_config'
+require_relative '../../support/shared_examples/status_config'
+require_relative '../../support/shared_examples/with_captured_status'
 
 describe RubyGPG2::Commands::Import do
   before(:each) do
@@ -36,6 +38,14 @@ describe RubyGPG2::Commands::Import do
 
   it_behaves_like "a command with global config", '--import'
   it_behaves_like "a command with batch config", '--import'
+  it_behaves_like "a command with status config", '--import'
+  it_behaves_like "a command with captured status", '--import',
+      [
+          '[GNUPG:] KEY_CONSIDERED A65C6366D55F0BA7719EE38F582D74F22F5601F9 0',
+          '[GNUPG:] IMPORTED 582D74F22F5601F8 Joe Fox <jfox@example.com>',
+          '[GNUPG:] IMPORT_OK 1 A65C6366D55F0BA7719EE38F582D74F22F5601F9',
+          '[GNUPG:] IMPORT_RES 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0'
+      ]
 
   it 'passes all key files paths when provided' do
     command = subject.class.new
