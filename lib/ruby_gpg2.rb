@@ -24,6 +24,14 @@ module RubyGPG2
   end
 
   module ClassMethods
+    def decrypt(opts = {})
+      Commands::Decrypt.new.execute(opts)
+    end
+
+    def encrypt(opts = {})
+      Commands::Encrypt.new.execute(opts)
+    end
+
     def export(opts = {})
       Commands::Export.new.execute(opts)
     end
