@@ -1,3 +1,3 @@
 module RubyGPG2
-  VERSION = '0.1.0.pre.23'
+  VERSION = '0.1.0.pre.24'
 end
