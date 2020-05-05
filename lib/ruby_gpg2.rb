@@ -3,6 +3,7 @@ require 'ruby_gpg2/commands'
 require 'ruby_gpg2/parameter_file_contents'
 require 'ruby_gpg2/colon_output'
 require 'ruby_gpg2/status_output'
+require 'ruby_gpg2/status_lines'
 require 'ruby_gpg2/key'
 require 'ruby_gpg2/user_id'
 
