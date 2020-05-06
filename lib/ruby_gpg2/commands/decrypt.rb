@@ -5,6 +5,7 @@ require_relative 'mixins/global_config'
 require_relative 'mixins/batch_config'
 require_relative 'mixins/input_config'
 require_relative 'mixins/output_config'
+require_relative 'mixins/trust_mode_config'
 require_relative 'mixins/passphrase_config'
 require_relative 'mixins/pinentry_config'
 require_relative 'mixins/without_passphrase'
@@ -16,6 +17,7 @@ module RubyGPG2
       include Mixins::BatchConfig
       include Mixins::InputConfig
       include Mixins::OutputConfig
+      include Mixins::TrustModeConfig
       include Mixins::PassphraseConfig
       include Mixins::PinentryConfig
       include Mixins::WithoutPassphrase

@@ -7,6 +7,7 @@ require_relative 'mixins/armor_config'
 require_relative 'mixins/input_config'
 require_relative 'mixins/output_config'
 require_relative 'mixins/recipient_config'
+require_relative 'mixins/trust_mode_config'
 
 module RubyGPG2
   module Commands
@@ -17,6 +18,7 @@ module RubyGPG2
       include Mixins::InputConfig
       include Mixins::OutputConfig
       include Mixins::RecipientConfig
+      include Mixins::TrustModeConfig
 
       def configure_command(builder, opts)
         builder = super(builder, opts)

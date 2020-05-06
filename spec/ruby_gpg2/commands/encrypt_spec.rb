@@ -6,6 +6,7 @@ require_relative '../../support/shared_examples/armor_config'
 require_relative '../../support/shared_examples/input_config'
 require_relative '../../support/shared_examples/output_config'
 require_relative '../../support/shared_examples/recipient_config'
+require_relative '../../support/shared_examples/trust_mode_config'
 
 describe RubyGPG2::Commands::Encrypt do
   before(:each) do
@@ -44,4 +45,5 @@ describe RubyGPG2::Commands::Encrypt do
   it_behaves_like "a command with input config", '--encrypt'
   it_behaves_like "a command with output config", '--encrypt'
   it_behaves_like "a command with recipient config", '--encrypt'
+  it_behaves_like "a command with trust mode config", '--encrypt'
 end
