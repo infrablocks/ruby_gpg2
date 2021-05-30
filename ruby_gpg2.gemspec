@@ -6,8 +6,8 @@ require 'ruby_gpg2/version'
 Gem::Specification.new do |spec|
   spec.name = 'ruby_gpg2'
   spec.version = RubyGPG2::VERSION
-  spec.authors = ['Toby Clemson']
-  spec.email = ['tobyclemson@gmail.com']
+  spec.authors = ['InfraBlocks Maintainers']
+  spec.email = ['maintainers@infrablocks.io']
 
   spec.summary = 'A simple Ruby wrapper for invoking gpg (>= 2.0) commands.'
   spec.description = 'Wraps the gpg binary (>= 2.0) so that it can be ' +
