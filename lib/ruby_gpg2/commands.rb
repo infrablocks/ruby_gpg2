@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'commands/decrypt'
 require_relative 'commands/encrypt'
 require_relative 'commands/export'
@@ -9,6 +11,5 @@ require_relative 'commands/list_secret_keys'
 
 module RubyGPG2
   module Commands
-
   end
 end

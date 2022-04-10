@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module StatusLines
     class Unimplemented
@@ -6,7 +8,8 @@ module RubyGPG2
       end
 
       attr_reader(
-          :raw)
+        :raw
+      )
 
       def initialize(opts)
         @raw = opts[:raw]
@@ -24,7 +27,7 @@ module RubyGPG2
 
       def state
         [
-            @raw
+          @raw
         ]
       end
     end

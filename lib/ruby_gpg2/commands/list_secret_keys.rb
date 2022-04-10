@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lino'
 
 require_relative 'base'
@@ -16,8 +18,7 @@ module RubyGPG2
 
       def configure_command(builder, opts)
         builder = builder.with_subcommand('--list-secret-keys')
-        builder = super(builder, opts)
-        builder
+        super(builder, opts)
       end
     end
   end

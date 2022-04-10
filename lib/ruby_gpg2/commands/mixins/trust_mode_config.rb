@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
     module Mixins
@@ -6,8 +8,11 @@ module RubyGPG2
           trust_mode = opts[:trust_mode]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-                '--trust-mode', trust_mode) if trust_mode
+          if trust_mode
+            builder = builder.with_option(
+              '--trust-mode', trust_mode
+            )
+          end
           builder
         end
       end

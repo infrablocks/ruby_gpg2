@@ -1,20 +1,25 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   class Key
     attr_reader(
-        :type,
-        :validity,
-        :length,
-        :algorithm,
-        :id,
-        :creation_date,
-        :owner_trust,
-        :capabilities,
-        :serial_number,
-        :compliance_modes,
-        :origin,
-        :fingerprint,
-        :user_ids)
+      :type,
+      :validity,
+      :length,
+      :algorithm,
+      :id,
+      :creation_date,
+      :owner_trust,
+      :capabilities,
+      :serial_number,
+      :compliance_modes,
+      :origin,
+      :fingerprint,
+      :user_ids
+    )
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def initialize(opts)
       @type = opts[:type]
       @validity = opts[:validity]
@@ -30,6 +35,8 @@ module RubyGPG2
       @fingerprint = opts[:fingerprint]
       @user_ids = opts[:user_ids]
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     def primary_user_id
       @user_ids&.first
@@ -41,21 +48,23 @@ module RubyGPG2
 
     protected
 
+    # rubocop:disable Metrics/MethodLength
     def state
       [
-          @type,
-          @validity,
-          @length,
-          @algorithm,
-          @id,
-          @creation_date,
-          @owner_trust,
-          @capabilities,
-          @serial_number,
-          @compliance_modes,
-          @origin,
-          @fingerprint
+        @type,
+        @validity,
+        @length,
+        @algorithm,
+        @id,
+        @creation_date,
+        @owner_trust,
+        @capabilities,
+        @serial_number,
+        @compliance_modes,
+        @origin,
+        @fingerprint
       ]
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

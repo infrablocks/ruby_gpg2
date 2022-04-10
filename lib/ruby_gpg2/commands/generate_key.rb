@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lino'
 
 require_relative 'base'
@@ -27,7 +29,9 @@ module RubyGPG2
 
         builder = builder.with_subcommand('--generate-key')
         builder = super(builder, opts)
-        builder = builder.with_argument(parameter_file_path) if parameter_file_path
+        if parameter_file_path
+          builder = builder.with_argument(parameter_file_path)
+        end
         builder
       end
     end

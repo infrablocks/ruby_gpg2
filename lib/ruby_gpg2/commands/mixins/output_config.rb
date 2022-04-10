@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
     module Mixins
@@ -6,8 +8,11 @@ module RubyGPG2
           output_file_path = opts[:output_file_path]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-                '--output', output_file_path, quoting: '"') if output_file_path
+          if output_file_path
+            builder = builder.with_option(
+              '--output', output_file_path, quoting: '"'
+            )
+          end
           builder
         end
       end

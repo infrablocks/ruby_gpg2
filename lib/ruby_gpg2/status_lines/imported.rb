@@ -1,18 +1,22 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module StatusLines
     class Imported
       def self.parse(line)
         match = line.match(/^\[GNUPG:\] IMPORTED (.*?) (.*)$/)
         new(
-            raw: line,
-            key_id: match[1],
-            user_id: match[2])
+          raw: line,
+          key_id: match[1],
+          user_id: match[2]
+        )
       end
 
       attr_reader(
-          :raw,
-          :key_id,
-          :user_id)
+        :raw,
+        :key_id,
+        :user_id
+      )
 
       def initialize(opts)
         @raw = opts[:raw]
@@ -32,9 +36,9 @@ module RubyGPG2
 
       def state
         [
-            @raw,
-            @key_id,
-            @user_id
+          @raw,
+          @key_id,
+          @user_id
         ]
       end
     end

@@ -1,7 +1,7 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
-    class Result < Struct.new(:output, :status)
-
-    end
+    Result = Struct.new(:output, :status)
   end
 end

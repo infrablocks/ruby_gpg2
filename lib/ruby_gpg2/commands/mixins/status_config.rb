@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
     module Mixins
@@ -6,8 +8,11 @@ module RubyGPG2
           status_file = opts[:status_file]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-              '--status-file', status_file, quoting: '"') if status_file
+          if status_file
+            builder = builder.with_option(
+              '--status-file', status_file, quoting: '"'
+            )
+          end
           builder
         end
       end

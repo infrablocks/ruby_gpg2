@@ -1,26 +1,30 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module StatusLines
     class ImportOK
       REASONS = {
-          1 => :new_key,
-          2 => :new_user_ids,
-          4 => :new_signatures,
-          8 => :new_subkeys,
-          16 => :private_key
-      }
+        1 => :new_key,
+        2 => :new_user_ids,
+        4 => :new_signatures,
+        8 => :new_subkeys,
+        16 => :private_key
+      }.freeze
 
       def self.parse(line)
         match = line.match(/^\[GNUPG:\] IMPORT_OK (\d+) (.*)$/)
         new(
-            raw: line,
-            reasons: reasons(match[1]),
-            key_fingerprint: match[2])
+          raw: line,
+          reasons: reasons(match[1]),
+          key_fingerprint: match[2]
+        )
       end
 
       attr_reader(
-          :raw,
-          :reasons,
-          :key_fingerprint)
+        :raw,
+        :reasons,
+        :key_fingerprint
+      )
 
       def initialize(opts)
         @raw = opts[:raw]
@@ -40,23 +44,23 @@ module RubyGPG2
 
       def state
         [
-            @raw,
-            @reasons,
-            @key_fingerprint
+          @raw,
+          @reasons,
+          @key_fingerprint
         ]
       end
 
-      private
+      class << self
+        protected
 
-      def self.reasons(value)
-        value = value.to_i
-        if value == 0
-          [:no_change]
-        else
-          REASONS.inject([]) do |r, entry|
-            (value & entry[0]) > 0 ?
-                (r << entry[1]) :
-                r
+        def reasons(value)
+          value = value.to_i
+          if value.zero?
+            [:no_change]
+          else
+            REASONS.inject([]) do |r, entry|
+              (value & entry[0]).positive? ? (r << entry[1]) : r
+            end
           end
         end
       end

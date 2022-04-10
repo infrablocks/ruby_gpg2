@@ -1,26 +1,30 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module StatusLines
     class KeyCreated
       KEY_TYPES = {
-          'B' => :primary_and_subkey,
-          'P' => :primary,
-          'S' => :subkey
-      }
+        'B' => :primary_and_subkey,
+        'P' => :primary,
+        'S' => :subkey
+      }.freeze
 
       def self.parse(line)
         match = line.match(/^\[GNUPG:\] KEY_CREATED (.) (.*?)(?: (.*))?$/)
         new(
-            raw: line,
-            key_type: KEY_TYPES[match[1]],
-            key_fingerprint: match[2],
-            handle: match[3])
+          raw: line,
+          key_type: KEY_TYPES[match[1]],
+          key_fingerprint: match[2],
+          handle: match[3]
+        )
       end
 
       attr_reader(
-          :raw,
-          :key_type,
-          :key_fingerprint,
-          :handle)
+        :raw,
+        :key_type,
+        :key_fingerprint,
+        :handle
+      )
 
       def initialize(opts)
         @raw = opts[:raw]
@@ -41,9 +45,9 @@ module RubyGPG2
 
       def state
         [
-            @raw,
-            @key_type,
-            @key_fingerprint
+          @raw,
+          @key_type,
+          @key_fingerprint
         ]
       end
     end

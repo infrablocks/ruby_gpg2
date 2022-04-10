@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lino'
 
 require_relative 'base'
@@ -22,8 +24,7 @@ module RubyGPG2
 
       def configure_command(builder, opts)
         builder = super(builder, opts)
-        builder = builder.with_subcommand('--encrypt')
-        builder
+        builder.with_subcommand('--encrypt')
       end
     end
   end

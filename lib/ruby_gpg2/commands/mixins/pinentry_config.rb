@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
     module Mixins
@@ -6,8 +8,11 @@ module RubyGPG2
           pinentry_mode = opts[:pinentry_mode]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-              '--pinentry-mode', pinentry_mode) if pinentry_mode
+          if pinentry_mode
+            builder = builder.with_option(
+              '--pinentry-mode', pinentry_mode
+            )
+          end
           builder
         end
       end

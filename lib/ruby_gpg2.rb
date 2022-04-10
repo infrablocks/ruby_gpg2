@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby_gpg2/version'
 require 'ruby_gpg2/commands'
 require 'ruby_gpg2/parameter_file_contents'

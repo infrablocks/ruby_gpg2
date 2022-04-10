@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lino'
 
 require_relative './result'
@@ -13,17 +15,12 @@ module RubyGPG2
       end
 
       def execute(opts = {})
-        builder = instantiate_builder
-
         do_before(opts)
         do_around(opts) do |updated_opts|
-          builder = configure_command(builder, updated_opts)
+          builder = configure_command(instantiate_builder, updated_opts)
           builder
-              .build
-              .execute(
-                  stdin: stdin,
-                  stdout: stdout,
-                  stderr: stderr)
+            .build
+            .execute(stdin: stdin, stdout: stdout, stderr: stderr)
         end
         do_after(opts)
       end
@@ -34,13 +31,12 @@ module RubyGPG2
 
       def instantiate_builder
         Lino::CommandLineBuilder
-            .for_command(binary)
+          .for_command(binary)
       end
 
-      def do_before(opts)
-      end
+      def do_before(_); end
 
-      def configure_command(builder, opts)
+      def configure_command(builder, _opts)
         builder
       end
 
@@ -48,7 +44,7 @@ module RubyGPG2
         yield opts
       end
 
-      def do_after(opts)
+      def do_after(_)
         Result.new
       end
     end

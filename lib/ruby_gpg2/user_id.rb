@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   class UserID
     attr_reader(
-        :name,
-        :comment,
-        :email,
-        :validity,
-        :creation_date,
-        :expiration_date,
-        :hash,
-        :origin)
+      :name,
+      :comment,
+      :email,
+      :validity,
+      :creation_date,
+      :expiration_date,
+      :hash,
+      :origin
+    )
 
     def initialize(opts)
       @name = opts[:name]
@@ -29,14 +32,14 @@ module RubyGPG2
 
     def state
       [
-          @name,
-          @comment,
-          @email,
-          @validity,
-          @creation_date,
-          @expiration_date,
-          @hash,
-          @origin
+        @name,
+        @comment,
+        @email,
+        @validity,
+        @creation_date,
+        @expiration_date,
+        @hash,
+        @origin
       ]
     end
   end

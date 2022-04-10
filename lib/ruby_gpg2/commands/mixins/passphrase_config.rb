@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyGPG2
   module Commands
     module Mixins
@@ -6,8 +8,11 @@ module RubyGPG2
           passphrase = opts[:passphrase]
 
           builder = super(builder, opts)
-          builder = builder.with_option(
-                '--passphrase', passphrase, quoting: '"') if passphrase
+          if passphrase
+            builder = builder.with_option(
+              '--passphrase', passphrase, quoting: '"'
+            )
+          end
           builder
         end
       end

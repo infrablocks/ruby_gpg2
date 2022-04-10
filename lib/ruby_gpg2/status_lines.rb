@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'status_lines/import_ok'
 require_relative 'status_lines/import_problem'
 require_relative 'status_lines/imported'
@@ -7,6 +9,5 @@ require_relative 'status_lines/unimplemented'
 
 module RubyGPG2
   module StatusLines
-
   end
 end
