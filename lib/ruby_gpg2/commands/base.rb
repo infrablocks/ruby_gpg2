@@ -2,7 +2,7 @@
 
 require 'lino'
 
-require_relative './result'
+require_relative 'result'
 
 module RubyGPG2
   module Commands

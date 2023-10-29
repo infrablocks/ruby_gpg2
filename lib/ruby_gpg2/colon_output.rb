@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './colon_record'
-require_relative './key'
+require_relative 'colon_record'
+require_relative 'key'
 
 module RubyGPG2
   class ColonOutput
