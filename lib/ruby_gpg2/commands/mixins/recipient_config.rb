@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           recipient = parameters[:recipient]
 
-          builder = super(builder, parameters)
+          b = super
           if recipient
-            builder = builder.with_option(
+            b = b.with_option(
               '--recipient', recipient
             )
           end
-          builder
+          b
         end
       end
     end

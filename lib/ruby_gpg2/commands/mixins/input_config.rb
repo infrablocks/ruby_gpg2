@@ -9,9 +9,9 @@ module RubyGPG2
         def configure_command(builder, parameters)
           input_file_path = parameters[:input_file_path]
 
-          builder = super(builder, parameters)
-          builder = builder.with_argument(input_file_path) if input_file_path
-          builder
+          b = super
+          b = b.with_argument(input_file_path) if input_file_path
+          b
         end
       end
     end

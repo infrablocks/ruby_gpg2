@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           pinentry_mode = parameters[:pinentry_mode]
 
-          builder = super(builder, parameters)
+          b = super
           if pinentry_mode
-            builder = builder.with_option(
+            b = b.with_option(
               '--pinentry-mode', pinentry_mode
             )
           end
-          builder
+          b
         end
       end
     end

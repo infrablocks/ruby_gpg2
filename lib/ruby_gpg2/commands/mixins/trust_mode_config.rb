@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           trust_mode = parameters[:trust_mode]
 
-          builder = super(builder, parameters)
+          b = super
           if trust_mode
-            builder = builder.with_option(
+            b = b.with_option(
               '--trust-mode', trust_mode
             )
           end
-          builder
+          b
         end
       end
     end

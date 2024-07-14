@@ -17,12 +17,12 @@ module RubyGPG2
       def configure_command(builder, parameters)
         names = parameters[:names] || []
 
-        builder = super(builder, parameters)
-        builder = builder.with_subcommand('--export')
+        b = super
+        b = b.with_subcommand('--export')
         names.each do |name|
-          builder = builder.with_argument(name)
+          b = b.with_argument(name)
         end
-        builder
+        b
       end
     end
   end

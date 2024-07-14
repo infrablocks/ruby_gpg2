@@ -14,9 +14,9 @@ module RubyGPG2
         def configure_command(builder, parameters)
           batch = parameters[:batch]
 
-          builder = super(builder, parameters)
-          builder = builder.with_flag('--batch') if batch
-          builder
+          b = super
+          b = b.with_flag('--batch') if batch
+          b
         end
       end
     end

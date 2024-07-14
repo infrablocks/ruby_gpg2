@@ -19,12 +19,12 @@ module RubyGPG2
       def configure_command(builder, parameters)
         key_file_paths = parameters[:key_file_paths] || []
 
-        builder = super(builder, parameters)
-        builder = builder.with_subcommand('--import')
+        b = super
+        b = b.with_subcommand('--import')
         key_file_paths.each do |key_file_path|
-          builder = builder.with_argument(key_file_path)
+          b = b.with_argument(key_file_path)
         end
-        builder
+        b
       end
     end
   end

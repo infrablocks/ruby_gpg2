@@ -23,8 +23,8 @@ module RubyGPG2
       include Mixins::TrustModeConfig
 
       def configure_command(builder, parameters)
-        builder = super(builder, parameters)
-        builder.with_subcommand('--encrypt')
+        b = super
+        b.with_subcommand('--encrypt')
       end
     end
   end

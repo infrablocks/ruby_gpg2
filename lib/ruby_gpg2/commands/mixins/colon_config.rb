@@ -14,9 +14,9 @@ module RubyGPG2
         def configure_command(builder, parameters)
           with_colons = parameters[:with_colons]
 
-          builder = super(builder, parameters)
-          builder = builder.with_flag('--with-colons') if with_colons
-          builder
+          b = super
+          b = b.with_flag('--with-colons') if with_colons
+          b
         end
       end
     end

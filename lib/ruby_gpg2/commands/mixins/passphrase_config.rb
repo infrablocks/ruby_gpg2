@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           passphrase = parameters[:passphrase]
 
-          builder = super(builder, parameters)
+          b = super
           if passphrase
-            builder = builder.with_option(
+            b = b.with_option(
               '--passphrase', passphrase, quoting: '"'
             )
           end
-          builder
+          b
         end
       end
     end

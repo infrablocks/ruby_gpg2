@@ -15,8 +15,8 @@ module RubyGPG2
       include Mixins::WithCapturedOutput
 
       def configure_command(builder, parameters)
-        builder = builder.with_subcommand('--list-secret-keys')
-        super(builder, parameters)
+        b = builder.with_subcommand('--list-secret-keys')
+        super(b, parameters)
       end
     end
   end

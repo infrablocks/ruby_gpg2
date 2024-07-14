@@ -36,9 +36,9 @@ module RubyGPG2
         end
 
         def process_result(result, parameters, invocation_options)
-          result = super(result, parameters, invocation_options)
-          result.status = status(parameters) if parameters[:with_status]
-          result
+          r = super
+          r.status = status(parameters) if parameters[:with_status]
+          r
         end
       end
     end

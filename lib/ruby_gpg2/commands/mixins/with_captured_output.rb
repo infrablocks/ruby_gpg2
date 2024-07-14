@@ -18,12 +18,12 @@ module RubyGPG2
         end
 
         def process_result(result, parameters, invocation_options)
-          result = super(result, parameters, invocation_options)
+          r = super
           if parameters[:parse_output]
-            result.output =
-              ColonOutput.parse(result.output)
+            r.output =
+              ColonOutput.parse(r.output)
           end
-          result
+          r
         end
       end
     end

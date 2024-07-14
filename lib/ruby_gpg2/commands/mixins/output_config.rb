@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           output_file_path = parameters[:output_file_path]
 
-          builder = super(builder, parameters)
+          b = super
           if output_file_path
-            builder = builder.with_option(
+            b = b.with_option(
               '--output', output_file_path, quoting: '"'
             )
           end
-          builder
+          b
         end
       end
     end

@@ -25,8 +25,8 @@ module RubyGPG2
       include Mixins::WithoutPassphrase
 
       def configure_command(builder, parameters)
-        builder = super(builder, parameters)
-        builder.with_subcommand('--decrypt')
+        b = super
+        b.with_subcommand('--decrypt')
       end
     end
   end

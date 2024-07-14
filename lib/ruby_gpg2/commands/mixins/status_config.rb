@@ -9,13 +9,13 @@ module RubyGPG2
         def configure_command(builder, parameters)
           status_file = parameters[:status_file]
 
-          builder = super(builder, parameters)
+          b = super
           if status_file
-            builder = builder.with_option(
+            b = b.with_option(
               '--status-file', status_file, quoting: '"'
             )
           end
-          builder
+          b
         end
       end
     end

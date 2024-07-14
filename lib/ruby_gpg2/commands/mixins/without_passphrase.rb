@@ -6,11 +6,14 @@ module RubyGPG2
       module WithoutPassphrase
         def configure_command(builder, parameters)
           without_passphrase = parameters[:without_passphrase]
+          p = parameters
           if without_passphrase
-            parameters = parameters.merge(passphrase: '',
-                                          pinentry_mode: :loopback)
+            p = p.merge(
+              passphrase: '',
+              pinentry_mode: :loopback
+            )
           end
-          super(builder, parameters)
+          super(builder, p)
         end
       end
     end

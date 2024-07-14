@@ -25,12 +25,10 @@ module RubyGPG2
       def configure_command(builder, parameters)
         parameter_file_path = parameters[:parameter_file_path]
 
-        builder = builder.with_subcommand('--generate-key')
-        builder = super(builder, parameters)
-        if parameter_file_path
-          builder = builder.with_argument(parameter_file_path)
-        end
-        builder
+        b = builder.with_subcommand('--generate-key')
+        b = super(b, parameters)
+        b = b.with_argument(parameter_file_path) if parameter_file_path
+        b
       end
     end
   end

@@ -15,14 +15,14 @@ module RubyGPG2
           home_directory = parameters[:home_directory]
           without_tty = parameters[:without_tty]
 
-          builder = super(builder, parameters)
+          b = super
           if home_directory
-            builder = builder.with_option(
+            b = b.with_option(
               '--homedir', home_directory, quoting: '"'
             )
           end
-          builder = builder.with_flag('--no-tty') if without_tty
-          builder
+          b = b.with_flag('--no-tty') if without_tty
+          b
         end
       end
     end

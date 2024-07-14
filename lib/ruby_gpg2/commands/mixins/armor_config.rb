@@ -9,9 +9,9 @@ module RubyGPG2
         def configure_command(builder, parameters)
           armor = parameters[:armor]
 
-          builder = super(builder, parameters)
-          builder = builder.with_flag('--armor') if armor
-          builder
+          b = super
+          b = b.with_flag('--armor') if armor
+          b
         end
       end
     end
