@@ -97,7 +97,7 @@ module RubyGPG2
     # rubocop:disable Metrics/MethodLength
     def make_key(type, key_record, fingerprint, user_ids)
       Key.new(
-        type: type,
+        type:,
         validity: key_record.validity,
         length: key_record.key_length,
         algorithm: key_record.key_algorithm,
@@ -108,8 +108,8 @@ module RubyGPG2
         serial_number: key_record.serial_number,
         compliance_modes: key_record.compliance_modes,
         origin: key_record.origin,
-        fingerprint: fingerprint,
-        user_ids: user_ids
+        fingerprint:,
+        user_ids:
       )
     end
     # rubocop:enable Metrics/MethodLength

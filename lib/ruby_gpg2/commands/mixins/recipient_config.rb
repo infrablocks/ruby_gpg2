@@ -4,10 +4,12 @@ module RubyGPG2
   module Commands
     module Mixins
       module RecipientConfig
-        def configure_command(builder, opts)
-          recipient = opts[:recipient]
+        private
 
-          builder = super(builder, opts)
+        def configure_command(builder, parameters)
+          recipient = parameters[:recipient]
+
+          builder = super(builder, parameters)
           if recipient
             builder = builder.with_option(
               '--recipient', recipient

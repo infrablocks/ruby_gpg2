@@ -23,7 +23,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               key_type: key_type
+               key_type:
              })
 
       expect(parameter_file.key_type).to(eq(key_type))
@@ -48,7 +48,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               key_length: key_length
+               key_length:
              })
 
       expect(parameter_file.key_length).to(eq(key_length))
@@ -73,7 +73,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               subkey_type: subkey_type
+               subkey_type:
              })
 
       expect(parameter_file.subkey_type).to(eq(subkey_type))
@@ -98,7 +98,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               subkey_length: subkey_length
+               subkey_length:
              })
 
       expect(parameter_file.subkey_length).to(eq(subkey_length))
@@ -110,7 +110,7 @@ describe RubyGPG2::ParameterFileContents do
       parameter_file =
         described_class
         .new({
-               owner_name: owner_name,
+               owner_name:,
                owner_email: 'cara.smith@example.com'
              })
 
@@ -123,7 +123,7 @@ describe RubyGPG2::ParameterFileContents do
       expect do
         described_class
           .new({
-                 owner_name: owner_name,
+                 owner_name:,
                  owner_email: 'cara.smith@example.com'
                })
       end.to(raise_error(
@@ -139,7 +139,7 @@ describe RubyGPG2::ParameterFileContents do
         described_class
         .new({
                owner_name: 'Cara Smith',
-               owner_email: owner_email
+               owner_email:
              })
 
       expect(parameter_file.owner_email).to(eq(owner_email))
@@ -152,7 +152,7 @@ describe RubyGPG2::ParameterFileContents do
         described_class
           .new({
                  owner_name: 'Cara Smith',
-                 owner_email: owner_email
+                 owner_email:
                })
       end.to(raise_error(
                RuntimeError,
@@ -179,7 +179,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               owner_comment: owner_comment
+               owner_comment:
              })
 
       expect(parameter_file.owner_comment).to(eq(owner_comment))
@@ -204,7 +204,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               expiry: expiry
+               expiry:
              })
 
       expect(parameter_file.expiry).to(eq(expiry))
@@ -229,7 +229,7 @@ describe RubyGPG2::ParameterFileContents do
         .new({
                owner_name: 'Cara Smith',
                owner_email: 'cara.smith@example.com',
-               passphrase: passphrase
+               passphrase:
              })
 
       expect(parameter_file.passphrase).to(eq(passphrase))

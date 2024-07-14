@@ -2,6 +2,6 @@
 
 module RubyGPG2
   module Commands
-    Result = Struct.new(:output, :status)
+    Result = Struct.new(:output, :error, :status)
   end
 end

@@ -5,7 +5,7 @@ require 'date'
 module RubyGPG2
   # rubocop:disable Metrics/ClassLength
   class ColonRecord
-    USER_ID_REGEX = /^(.*?) (?:\((.*)\) )?<(.*)>$/.freeze
+    USER_ID_REGEX = /^(.*?) (?:\((.*)\) )?<(.*)>$/
 
     TYPES = {
       'pub' => :public_key,
@@ -225,7 +225,7 @@ module RubyGPG2
       def make_standard_record(record, type, fields)
         new(
           raw: record,
-          type: type,
+          type:,
           validity: validity(fields[1]),
           key_length: key_length(fields[2]),
           key_algorithm: key_algorithm(fields[3]),
@@ -252,7 +252,7 @@ module RubyGPG2
       def make_trust_base_record(record, type, fields)
         new(
           raw: record,
-          type: type,
+          type:,
           trust_model: trust_model(fields[2]),
           creation_date: creation_date(fields[3]),
           expiration_date: expiration_date(fields[4]),

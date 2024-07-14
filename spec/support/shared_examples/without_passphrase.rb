@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command allowing no passphrase'
 ) do |command_name, arguments = [], options = {}|
@@ -9,64 +11,59 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'uses an empty passphrase when without_passphrase is true' do
     command = described_class.new
-
-    allow(Open4).to(receive(:spawn))
 
     command.execute(
       options.merge(without_passphrase: true)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* --passphrase "" .*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --passphrase "" .*#{command_string}$/))
   end
 
   it 'uses loopback pinentry mode when without_passphrase is true' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(without_passphrase: true)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* --pinentry-mode loopback .*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --pinentry-mode loopback .*#{command_string}$/))
   end
 
   it 'does not include any passphrase when without_passphrase is false' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(without_passphrase: false)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* ((?!--passphrase).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* ((?!--passphrase).)*#{command_string}$/))
   end
 
   it 'does not include any pinentry mode when without_passphrase is false' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(without_passphrase: false)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* ((?!--pinentry-mode).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* ((?!--pinentry-mode).)*#{command_string}$/))
   end
 end

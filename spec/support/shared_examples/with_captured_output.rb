@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with captured output'
 ) do |command_name, records, arguments = [], options = {}|
@@ -9,21 +11,28 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   # rubocop:disable RSpec/MultipleExpectations
   it 'parses the output by default' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn) do |_, opts|
-      opts[:stdout].write(records.join("\n"))
-    end)
+    executor.write_to_stdout(records.join("\n"))
 
     result = command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-        .with(/^#{binary}.* --with-colons .*#{command_string}$/,
-              any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --with-colons .*#{command_string}$/))
     expect(result.output)
       .to(eq(RubyGPG2::ColonOutput.parse(records.join("\n"))))
   end
@@ -33,19 +42,15 @@ shared_examples(
   it 'leaves output un-parsed when requested' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn) do |_, opts|
-      opts[:stdout].write(records.join("\n"))
-    end)
+    executor.write_to_stdout(records.join("\n"))
 
     result = command.execute(
       with_colons: true,
       parse_output: false
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-        .with(/^#{binary}.* --with-colons .*#{command_string}$/,
-              any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --with-colons .*#{command_string}$/))
     expect(result.output).to(eq(records.join("\n")))
   end
   # rubocop:enable RSpec/MultipleExpectations

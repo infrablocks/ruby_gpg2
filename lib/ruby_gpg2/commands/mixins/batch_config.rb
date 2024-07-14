@@ -4,10 +4,17 @@ module RubyGPG2
   module Commands
     module Mixins
       module BatchConfig
-        def configure_command(builder, opts)
-          batch = opts[:batch].nil? ? true : opts[:batch]
+        private
 
-          builder = super(builder, opts)
+        def parameter_defaults(parameters)
+          batch = parameters[:batch]
+          super.merge(batch: batch.nil? ? true : batch)
+        end
+
+        def configure_command(builder, parameters)
+          batch = parameters[:batch]
+
+          builder = super(builder, parameters)
           builder = builder.with_flag('--batch') if batch
           builder
         end

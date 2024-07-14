@@ -8,30 +8,37 @@ module RubyGPG2
   module Commands
     module Mixins
       module WithCapturedStatus
-        def do_around(opts)
-          if opts[:with_status]
-            Tempfile.create('status-file', opts[:work_directory]) do |f|
-              yield opts.merge(status_file: f.path)
-              @status = File.read(f.path)
-            end
-          else
-            yield opts
-          end
-        end
-
-        def do_after(opts)
-          if opts[:with_status]
-            super(opts.merge(status: resolve_status(@status, opts)))
-          else
-            super(opts)
-          end
-        end
-
         private
 
-        def resolve_status(status, opts)
-          parse_status = opts[:parse_status].nil? ? true : opts[:parse_status]
-          parse_status ? StatusOutput.parse(status) : status
+        # rubocop:disable Metrics/MethodLength
+        def do_around(parameters, invocation_options)
+          if parameters[:with_status]
+            Tempfile.create('status-file', parameters[:work_directory]) do |f|
+              result = yield(
+                parameters.merge(status_file: f.path), invocation_options
+              )
+              @status = File.read(f.path)
+              result
+            end
+          else
+            yield parameters, invocation_options
+          end
+        end
+        # rubocop:enable Metrics/MethodLength
+
+        def status(parameters)
+          parameters[:parse_status] ? StatusOutput.parse(@status) : @status
+        end
+
+        def parameter_defaults(parameters)
+          parse_status = parameters[:parse_status]
+          super.merge(parse_status: parse_status.nil? ? true : parse_status)
+        end
+
+        def process_result(result, parameters, invocation_options)
+          result = super(result, parameters, invocation_options)
+          result.status = status(parameters) if parameters[:with_status]
+          result
         end
       end
     end

@@ -4,7 +4,7 @@ require_relative 'status_lines'
 
 module RubyGPG2
   class StatusLine
-    TYPE_REGEX = /^\[GNUPG:\] (.*?)(\s|$)/.freeze
+    TYPE_REGEX = /^\[GNUPG:\] (.*?)(\s|$)/
 
     TYPES = {
       'IMPORT_OK' => StatusLines::ImportOK,

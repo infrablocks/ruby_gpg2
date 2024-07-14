@@ -4,10 +4,12 @@ module RubyGPG2
   module Commands
     module Mixins
       module TrustModeConfig
-        def configure_command(builder, opts)
-          trust_mode = opts[:trust_mode]
+        private
 
-          builder = super(builder, opts)
+        def configure_command(builder, parameters)
+          trust_mode = parameters[:trust_mode]
+
+          builder = super(builder, parameters)
           if trust_mode
             builder = builder.with_option(
               '--trust-mode', trust_mode

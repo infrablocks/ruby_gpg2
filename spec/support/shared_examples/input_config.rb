@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with input config'
 ) do |command_name, arguments = [], options = {}|
@@ -9,23 +11,28 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'passes the specified input path as an argument when provided' do
     command = described_class.new
 
     input_file_path = 'some/path/to/input'
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
-      options.merge(input_file_path: input_file_path)
+      options.merge(input_file_path:)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary}.* #{command_string} #{input_file_path}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* #{command_string} #{input_file_path}$/))
   end
 end

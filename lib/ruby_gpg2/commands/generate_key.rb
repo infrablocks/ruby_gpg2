@@ -8,7 +8,6 @@ require_relative 'mixins/batch_config'
 require_relative 'mixins/passphrase_config'
 require_relative 'mixins/pinentry_config'
 require_relative 'mixins/status_config'
-require_relative 'mixins/with_result'
 require_relative 'mixins/with_captured_status'
 require_relative 'mixins/without_passphrase'
 
@@ -20,15 +19,14 @@ module RubyGPG2
       include Mixins::PassphraseConfig
       include Mixins::PinentryConfig
       include Mixins::StatusConfig
-      include Mixins::WithResult
       include Mixins::WithCapturedStatus
       include Mixins::WithoutPassphrase
 
-      def configure_command(builder, opts)
-        parameter_file_path = opts[:parameter_file_path]
+      def configure_command(builder, parameters)
+        parameter_file_path = parameters[:parameter_file_path]
 
         builder = builder.with_subcommand('--generate-key')
-        builder = super(builder, opts)
+        builder = super(builder, parameters)
         if parameter_file_path
           builder = builder.with_argument(parameter_file_path)
         end

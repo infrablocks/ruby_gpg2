@@ -22,10 +22,10 @@ module RubyGPG2
       include Mixins::OutputConfig
       include Mixins::WithoutPassphrase
 
-      def configure_command(builder, opts)
-        names = opts[:names] || []
+      def configure_command(builder, parameters)
+        names = parameters[:names] || []
 
-        builder = super(builder, opts)
+        builder = super(builder, parameters)
         builder = builder.with_subcommand('--export-secret-keys')
         names.each do |name|
           builder = builder.with_argument(name)

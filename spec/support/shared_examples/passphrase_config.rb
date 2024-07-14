@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with passphrase config'
 ) do |command_name, arguments = [], options = {}|
@@ -9,34 +11,37 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'does not include any passphrase by default' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* ((?!--passphrase).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* ((?!--passphrase).)*#{command_string}$/))
   end
 
   it 'passes the specified passphrase when provided' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(passphrase: 'some-passphrase')
     )
 
-    command_pattern =
-      /^#{binary}.* --passphrase "some-passphrase" .*#{command_string}$/
-
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(command_pattern, any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(
+            /^#{binary}.* --passphrase "some-passphrase" .*#{command_string}$/
+          ))
   end
 end

@@ -3,7 +3,12 @@
 require 'spec_helper'
 
 describe RubyGPG2::Commands::ListPublicKeys do
+  let(:executor) { Lino::Executors::Mock.new }
+
   before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
     RubyGPG2.configure do |config|
       config.binary = 'path/to/binary'
     end
@@ -11,30 +16,25 @@ describe RubyGPG2::Commands::ListPublicKeys do
 
   after do
     RubyGPG2.reset!
+    Lino.reset!
   end
 
   it 'calls the gpg --list-public-keys command' do
     command = described_class.new(binary: 'gpg')
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^gpg.* --list-public-keys$/, any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^gpg.* --list-public-keys$/))
   end
 
   it 'defaults to the configured binary when none provided' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(%r{^path/to/binary.* --list-public-keys}, any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(%r{^path/to/binary.* --list-public-keys}))
   end
 
   it_behaves_like('a command with global config', '--list-public-keys')

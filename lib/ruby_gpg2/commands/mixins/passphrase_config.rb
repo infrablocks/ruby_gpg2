@@ -4,10 +4,12 @@ module RubyGPG2
   module Commands
     module Mixins
       module PassphraseConfig
-        def configure_command(builder, opts)
-          passphrase = opts[:passphrase]
+        private
 
-          builder = super(builder, opts)
+        def configure_command(builder, parameters)
+          passphrase = parameters[:passphrase]
+
+          builder = super(builder, parameters)
           if passphrase
             builder = builder.with_option(
               '--passphrase', passphrase, quoting: '"'

@@ -24,8 +24,8 @@ module RubyGPG2
       include Mixins::PinentryConfig
       include Mixins::WithoutPassphrase
 
-      def configure_command(builder, opts)
-        builder = super(builder, opts)
+      def configure_command(builder, parameters)
+        builder = super(builder, parameters)
         builder.with_subcommand('--decrypt')
       end
     end

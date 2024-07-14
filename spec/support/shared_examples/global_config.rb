@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with global config'
 ) do |command_name, arguments = [], options = {}|
@@ -9,20 +11,25 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'does not set a home directory by default' do
     command = subject.class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary} ((?!--homedir).)*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--homedir).)*#{command_string}$/))
   end
 
   it 'includes the provided home directory' do
@@ -30,66 +37,44 @@ shared_examples(
 
     command = subject.class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
-      options.merge(home_directory: home_directory)
+      options.merge(home_directory:)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary}.* --homedir "#{home_directory}" .*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(
+            /^#{binary}.* --homedir "#{home_directory}" .*#{command_string}$/
+          ))
   end
 
   it 'includes the no-tty flag by default' do
     command = subject.class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary}.* --no-tty .*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --no-tty .*#{command_string}$/))
   end
 
   it 'includes the no-tty flag when without tty is true' do
     command = subject.class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(without_tty: true)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary}.* --no-tty .*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --no-tty .*#{command_string}$/))
   end
 
   it 'does not include the no-tty flag when without tty is false' do
     command = subject.class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(without_tty: false)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary} ((?!--no-tty).)*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--no-tty).)*#{command_string}$/))
   end
 end

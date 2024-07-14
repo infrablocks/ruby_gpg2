@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with trust mode config'
 ) do |command_name, arguments = [], options = {}|
@@ -9,18 +11,25 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'does not include any trust mode option by default' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary} ((?!--trust-mode).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--trust-mode).)*#{command_string}$/))
   end
 
   it 'passes the specified trust mode when provided' do
@@ -28,17 +37,11 @@ shared_examples(
 
     trust_mode = :always
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
-      options.merge(trust_mode: trust_mode)
+      options.merge(trust_mode:)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(
-              /^#{binary}.* --trust-mode #{trust_mode} .*#{command_string}$/,
-              any_args
-            ))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --trust-mode #{trust_mode} .*#{command_string}$/))
   end
 end

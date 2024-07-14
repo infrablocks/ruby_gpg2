@@ -6,21 +6,24 @@ module RubyGPG2
   module Commands
     module Mixins
       module WithCapturedOutput
-        def initialize(*args)
-          super(*args)
-          @stdout = StringIO.new unless
-              defined?(@stdout) && @stdout.respond_to?(:string)
-        end
-
-        def do_after(opts)
-          super(opts.merge(output: resolve_output(stdout.string, opts)))
-        end
-
         private
 
-        def resolve_output(output, opts)
-          parse_output = opts[:parse_output].nil? ? true : opts[:parse_output]
-          parse_output ? ColonOutput.parse(output) : output
+        def parameter_defaults(parameters)
+          parse_output = parameters[:parse_output]
+          super.merge(parse_output: parse_output.nil? ? true : parse_output)
+        end
+
+        def invocation_option_defaults(_invocation_options)
+          super.merge(capture: [:stdout])
+        end
+
+        def process_result(result, parameters, invocation_options)
+          result = super(result, parameters, invocation_options)
+          if parameters[:parse_output]
+            result.output =
+              ColonOutput.parse(result.output)
+          end
+          result
         end
       end
     end

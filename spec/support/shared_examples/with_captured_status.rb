@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 shared_examples(
   'a command with captured status'
 ) do |command_name, status_lines, arguments = [], options = {}|
@@ -9,48 +11,47 @@ shared_examples(
 
   let(:command_string) { "#{command_name}#{arguments_string}" }
   let(:binary) { 'path/to/binary' }
+  let(:executor) { Lino::Executors::Mock.new }
+
+  before do
+    Lino.configure do |config|
+      config.executor = executor
+    end
+  end
+
+  after do
+    Lino.reset!
+  end
 
   it 'does not include a status file by default' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(options)
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary} ((?!--status-file).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--status-file).)*#{command_string}$/))
   end
 
   it 'includes a status file when with_status is true' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(with_status: true)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary}.* --status-file .*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --status-file .*#{command_string}$/))
   end
 
   it 'includes a status file when with_status is false' do
     command = described_class.new
 
-    allow(Open4).to(receive(:spawn))
-
     command.execute(
       options.merge(with_status: false)
     )
 
-    expect(Open4)
-      .to(have_received(:spawn)
-            .with(/^#{binary} ((?!--status-file).)*#{command_string}$/,
-                  any_args))
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--status-file).)*#{command_string}$/))
   end
 
   it 'parses the status by default' do
@@ -63,13 +64,6 @@ shared_examples(
       .to(receive(:create)
             .with('status-file', nil)
             .and_yield(status_file))
-    allow(Open4).to(
-      receive(:spawn)
-          .with(
-            %r{^#{binary}.* --status-file "some/path" .*#{command_string}$},
-            any_args
-          )
-    )
     allow(File)
       .to(receive(:read)
             .with(status_file.path)
@@ -95,13 +89,6 @@ shared_examples(
       .to(receive(:create)
             .with('status-file', work_directory)
             .and_yield(status_file))
-    allow(Open4).to(
-      receive(:spawn)
-          .with(
-            %r{^#{binary}.* --status-file "some/path" .*#{command_string}$},
-            any_args
-          )
-    )
     allow(File)
       .to(receive(:read)
             .with(status_file.path)
@@ -110,7 +97,7 @@ shared_examples(
     result = command.execute(
       options.merge(
         with_status: true,
-        work_directory: work_directory
+        work_directory:
       )
     )
 
@@ -125,13 +112,6 @@ shared_examples(
 
     allow(status_file).to(receive(:path).and_return('some/path'))
     allow(Tempfile).to(receive(:create).and_yield(status_file))
-    allow(Open4).to(
-      receive(:spawn)
-          .with(
-            %r{^#{binary}.* --status-file "some/path" .*#{command_string}$},
-            any_args
-          )
-    )
     allow(File)
       .to(receive(:read)
             .with(status_file.path)

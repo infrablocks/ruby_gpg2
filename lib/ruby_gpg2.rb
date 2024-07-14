@@ -71,7 +71,7 @@ module RubyGPG2
 
     def initialize
       @binary = 'gpg'
-      @stdin = ''
+      @stdin = nil
       @stdout = $stdout
       @stderr = $stderr
     end

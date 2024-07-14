@@ -4,10 +4,12 @@ module RubyGPG2
   module Commands
     module Mixins
       module OutputConfig
-        def configure_command(builder, opts)
-          output_file_path = opts[:output_file_path]
+        private
 
-          builder = super(builder, opts)
+        def configure_command(builder, parameters)
+          output_file_path = parameters[:output_file_path]
+
+          builder = super(builder, parameters)
           if output_file_path
             builder = builder.with_option(
               '--output', output_file_path, quoting: '"'

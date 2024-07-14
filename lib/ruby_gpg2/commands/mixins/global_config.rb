@@ -4,11 +4,18 @@ module RubyGPG2
   module Commands
     module Mixins
       module GlobalConfig
-        def configure_command(builder, opts)
-          home_directory = opts[:home_directory]
-          without_tty = opts[:without_tty].nil? ? true : opts[:without_tty]
+        private
 
-          builder = super(builder, opts)
+        def parameter_defaults(parameters)
+          without_tty = parameters[:without_tty]
+          super.merge(without_tty: without_tty.nil? ? true : without_tty)
+        end
+
+        def configure_command(builder, parameters)
+          home_directory = parameters[:home_directory]
+          without_tty = parameters[:without_tty]
+
+          builder = super(builder, parameters)
           if home_directory
             builder = builder.with_option(
               '--homedir', home_directory, quoting: '"'
