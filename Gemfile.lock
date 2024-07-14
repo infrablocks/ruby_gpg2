@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby_gpg2 (0.11.0.pre.4)
+    ruby_gpg2 (0.11.0.pre.5)
       lino (= 3.2.0.pre.10)
 
 GEM
