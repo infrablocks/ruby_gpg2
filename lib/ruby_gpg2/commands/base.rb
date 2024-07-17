@@ -31,7 +31,7 @@ module RubyGPG2
 
       attr_reader :binary, :stdin, :stdout, :stderr
 
-      def do_before(parameters, invocation_options); end
+      def do_before(_parameters, _invocation_options); end
 
       def do_around(parameters, invocation_options)
         yield parameters, invocation_options
