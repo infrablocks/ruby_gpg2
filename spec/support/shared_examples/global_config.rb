@@ -77,4 +77,24 @@ shared_examples(
     expect(executor.executions.first.command_line.string)
       .to(match(/^#{binary} ((?!--no-tty).)*#{command_string}$/))
   end
+
+  it 'does not include the quiet flag by default' do
+    command = described_class.new
+
+    command.execute(options)
+
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary} ((?!--quiet).)*#{command_string}$/))
+  end
+
+  it 'includes the quiet flag when quiet is true' do
+    command = described_class.new
+
+    command.execute(
+      options.merge(quiet: true)
+    )
+
+    expect(executor.executions.first.command_line.string)
+      .to(match(/^#{binary}.* --quiet .*#{command_string}$/))
+  end
 end
