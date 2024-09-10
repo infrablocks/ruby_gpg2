@@ -15,6 +15,7 @@ module RubyGPG2
           )
         end
 
+        # rubocop:disable Metrics/MethodLength
         def configure_command(builder, parameters)
           home_directory = parameters[:home_directory]
           without_tty = parameters[:without_tty]
@@ -30,6 +31,7 @@ module RubyGPG2
           b = b.with_flag('--quiet') if quiet
           b
         end
+        # rubocop:enable Metrics/MethodLength
       end
     end
   end
